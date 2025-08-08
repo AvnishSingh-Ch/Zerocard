@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroCards - Smart Learning System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <h1>🧠 NeuroCards</h1>
+                    <p class="tagline">Smart Learning System</p>
+                </div>
+                <div class="live-stats">
+                    <div class="stat-pill">
+                        <span class="stat-icon">🎯</span>
+                        <span id="focus-score">85%</span>
+                        <span class="stat-label">Focus</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-icon">🔥</span>
+                        <span id="streak">0</span>
+                        <span class="stat-label">Streak</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="stat-icon">⚡</span>
+                        <span id="xp-points">0</span>
+                        <span class="stat-label">XP</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Deck Management -->
+            <section id="deck-section" class="section">
+                <h2>📚 Study Decks</h2>
+                <div class="deck-controls">
+                    <select id="deck-selector">
+                        <option value="default">Default Deck</option>
+                    </select>
+                    <input type="text" id="new-deck" placeholder="New deck name" maxlength="50">
+                    <button id="create-deck-btn" class="neuro-btn secondary">Create Deck</button>
+                </div>
+            </section>
+
+            <!-- Add Card Section -->
+            <section id="add-card-section" class="section">
+                <h2>➕ Add New Card</h2>
+                <div class="add-card-form">
+                    <div class="form-group">
+                        <label>Question/Front</label>
+                        <textarea id="new-word" placeholder="What do you want to learn?" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Answer/Back</label>
+                        <textarea id="word-definition" placeholder="The answer or explanation..." rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Deck</label>
+                            <select id="card-deck">
+                                <option value="default">Default Deck</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Difficulty</label>
+                            <select id="card-difficulty">
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="add-word-btn" class="neuro-btn primary">
+                        <span class="btn-icon">➕</span>
+                        <span>Create Card</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Flashcard Study Section -->
+            <section id="flashcard-section" class="section">
+                <h2>📖 Study Session</h2>
+                <div class="flashcard-container">
+                    <div id="flashcard" class="flashcard">
+                        <div class="card-content">
+                            <div id="definition" class="definition">Click "Start Learning" to begin</div>
+                            <div id="result" class="result hidden"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Neural Response System -->
+                <div id="neural-response" class="neural-response hidden">
+                    <h3>How did that feel? 🧠</h3>
+                    <div class="response-grid">
+                        <button class="response-btn struggle" data-response="struggle">
+                            <div class="response-icon">😵</div>
+                            <span>Struggled</span>
+                            <small>Need more practice</small>
+                        </button>
+                        <button class="response-btn think" data-response="think">
+                            <div class="response-icon">🤔</div>
+                            <span>Had to Think</span>
+                            <small>Getting there</small>
+                        </button>
+                        <button class="response-btn flow" data-response="flow">
+                            <div class="response-icon">😊</div>
+                            <span>In the Flow</span>
+                            <small>Felt natural</small>
+                        </button>
+                        <button class="response-btn instant" data-response="instant">
+                            <div class="response-icon">⚡</div>
+                            <span>Instant Recall</span>
+                            <small>Too easy!</small>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="study-controls">
+                    <button id="start-btn" class="neuro-btn primary">
+                        <span class="btn-icon">🚀</span>
+                        <span>Start Learning</span>
+                    </button>
+                    <button id="show-answer-btn" class="neuro-btn secondary hidden">
+                        <span class="btn-icon">👁️</span>
+                        <span>Show Answer</span>
+                    </button>
+                    <button id="next-btn" class="neuro-btn accent hidden">
+                        <span class="btn-icon">➡️</span>
+                        <span>Next Card</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section id="stats-section" class="section">
+                <h2>📊 Study Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-cards">0</div>
+                        <div class="stat-label">Total Cards</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="new-cards">0</div>
+                        <div class="stat-label">New Cards</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="learning-cards">0</div>
+                        <div class="stat-label">Learning</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="review-cards">0</div>
+                        <div class="stat-label">Review</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Card Browser -->
+            <section id="card-browser-section" class="section">
+                <h2>🗂️ Card Browser</h2>
+                <div class="browser-header">
+                    <div class="browser-info">
+                        <span id="card-count">0</span> cards in 
+                        <span id="current-deck-name">Default Deck</span>
+                    </div>
+                </div>
+                <div class="browser-controls">
+                    <input type="text" id="search-cards" placeholder="Search cards..." />
+                    <select id="filter-deck">
+                        <option value="default">Default Deck</option>
+                        <option value="all">All Decks</option>
+                    </select>
+                    <button id="export-btn" class="neuro-btn secondary">
+                        <span class="btn-icon">📁</span>
+                        <span>Export</span>
+                    </button>
+                </div>
+                <div id="card-list" class="card-list"></div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/core.js"></script>
+</body>
+</html>

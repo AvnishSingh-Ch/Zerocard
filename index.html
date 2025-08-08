@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zerocard - Smart Learning System</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Firebase SDK will be loaded via modules -->
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="header-content">
+          <div class="logo">
+            <h1>🃏 Zerocard</h1>
+            <p class="tagline">Smart Learning System</p>
+          </div>
+          <div class="header-right">
+            <div class="live-stats">
+              <div class="stat-pill">
+                <span class="stat-icon">🎯</span>
+                <span id="focus-score">85%</span>
+                <span class="stat-label">Focus</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-icon">🔥</span>
+                <span id="streak">0</span>
+                <span class="stat-label">Streak</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-icon">⚡</span>
+                <span id="xp-points">0</span>
+                <span class="stat-label">XP</span>
+              </div>
+            </div>
+            <div class="user-section">
+              <div id="user-info" class="user-info hidden">
+                <div class="user-avatar">
+                  <span id="user-initial">U</span>
+                </div>
+                <div class="user-details">
+                  <span id="user-name">User</span>
+                  <span id="sync-status" class="sync-status">☁️ Synced</span>
+                </div>
+                <button id="logout-btn" class="logout-btn">Logout</button>
+              </div>
+              <button id="login-btn" class="btn secondary">
+                <span class="btn-icon">🔐</span>
+                <span>Login (Coming Soon)</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Login Modal -->
+      <div id="login-modal" class="login-modal hidden">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>🔐 Login to Zerocard</h3>
+            <button class="close-btn" id="close-login-modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="auth-tabs">
+              <button class="auth-tab active" data-tab="login">Login</button>
+              <button class="auth-tab" data-tab="signup">Sign Up</button>
+            </div>
+
+            <div id="login-tab" class="auth-form active">
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  id="login-email"
+                  placeholder="your@email.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  id="login-password"
+                  placeholder="Your password"
+                />
+              </div>
+              <button id="login-submit" class="btn primary full-width">
+                <span class="btn-icon">🚀</span>
+                <span>Login</span>
+              </button>
+            </div>
+
+            <div id="signup-tab" class="auth-form hidden">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" id="signup-name" placeholder="Your name" />
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input
+                  type="email"
+                  id="signup-email"
+                  placeholder="your@email.com"
+                />
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input
+                  type="password"
+                  id="signup-password"
+                  placeholder="Choose a password"
+                />
+              </div>
+              <button id="signup-submit" class="btn primary full-width">
+                <span class="btn-icon">✨</span>
+                <span>Create Account</span>
+              </button>
+            </div>
+
+            <div class="auth-divider">
+              <span>or</span>
+            </div>
+
+            <button id="google-login" class="btn secondary full-width">
+              <span class="btn-icon">🔍</span>
+              <span>Continue with Google</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <main>
+        <!-- Deck Management -->
+        <section id="deck-section" class="section">
+          <h2>📚 Study Decks</h2>
+          <div class="deck-controls">
+            <select id="deck-selector">
+              <option value="default">Default Deck</option>
+            </select>
+            <input
+              type="text"
+              id="new-deck"
+              placeholder="New deck name"
+              maxlength="50"
+            />
+            <button id="create-deck-btn" class="btn secondary">
+              Create Deck
+            </button>
+          </div>
+        </section>
+
+        <!-- Add Card Section -->
+        <section id="add-card-section" class="section">
+          <h2>➕ Add New Card</h2>
+          <div class="add-card-form">
+            <div class="form-group">
+              <label>Question/Front</label>
+              <textarea
+                id="new-word"
+                placeholder="What do you want to learn?"
+                rows="2"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label>Answer/Back</label>
+              <textarea
+                id="word-definition"
+                placeholder="The answer or explanation..."
+                rows="3"
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Deck</label>
+                <select id="card-deck">
+                  <option value="default">Default Deck</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Difficulty</label>
+                <select id="card-difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+            <button id="add-word-btn" class="btn primary">
+              <span class="btn-icon">➕</span>
+              <span>Create Card</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Flashcard Study Section -->
+        <section id="flashcard-section" class="section">
+          <h2>📖 Study Session</h2>
+          <div class="flashcard-container">
+            <div id="flashcard" class="flashcard">
+              <div class="card-content">
+                <div id="definition" class="definition">
+                  Click "Start Learning" to begin
+                </div>
+                <div
+                  id="answer-input-container"
+                  class="answer-input-container hidden"
+                >
+                  <textarea
+                    id="user-answer"
+                    placeholder="Type your answer here..."
+                    rows="3"
+                  ></textarea>
+                  <button id="check-answer-btn" class="btn primary">
+                    <span class="btn-icon">✅</span>
+                    <span>Check Answer</span>
+                  </button>
+                </div>
+                <div id="result" class="result hidden"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Feedback System -->
+          <div id="feedback-response" class="feedback-response hidden">
+            <h3>How did you do? 📝</h3>
+            <div class="response-grid">
+              <button class="response-btn struggle" data-response="struggle">
+                <div class="response-icon">😵</div>
+                <span>Struggled</span>
+                <small>Need more practice</small>
+              </button>
+              <button class="response-btn think" data-response="think">
+                <div class="response-icon">🤔</div>
+                <span>Had to Think</span>
+                <small>Getting there</small>
+              </button>
+              <button class="response-btn flow" data-response="flow">
+                <div class="response-icon">😊</div>
+                <span>Felt Good</span>
+                <small>Felt natural</small>
+              </button>
+              <button class="response-btn instant" data-response="instant">
+                <div class="response-icon">⚡</div>
+                <span>Easy</span>
+                <small>Too easy!</small>
+              </button>
+            </div>
+          </div>
+
+          <div class="study-controls">
+            <button id="start-btn" class="btn primary">
+              <span class="btn-icon">🚀</span>
+              <span>Start Learning</span>
+            </button>
+            <button id="show-answer-btn" class="btn secondary hidden">
+              <span class="btn-icon">👁️</span>
+              <span>Show Answer</span>
+            </button>
+            <button id="next-btn" class="btn accent hidden">
+              <span class="btn-icon">➡️</span>
+              <span>Next Card</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="stats-section" class="section">
+          <h2>📊 Study Statistics</h2>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-number" id="total-cards">0</div>
+              <div class="stat-label">Total Cards</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="new-cards">0</div>
+              <div class="stat-label">New Cards</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="learning-cards">0</div>
+              <div class="stat-label">Learning</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" id="review-cards">0</div>
+              <div class="stat-label">Review</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card Browser -->
+        <section id="card-browser-section" class="section">
+          <h2>🗂️ Card Browser</h2>
+          <div class="browser-header">
+            <div class="browser-info">
+              <span id="card-count">0</span> cards in
+              <span id="current-deck-name">Default Deck</span>
+            </div>
+          </div>
+          <div class="browser-controls">
+            <input
+              type="text"
+              id="search-cards"
+              placeholder="Search cards..."
+            />
+            <select id="filter-deck">
+              <option value="default">Default Deck</option>
+              <option value="all">All Decks</option>
+            </select>
+            <button id="export-btn" class="btn secondary">
+              <span class="btn-icon">📁</span>
+              <span>Export</span>
+            </button>
+          </div>
+          <div id="card-list" class="card-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
