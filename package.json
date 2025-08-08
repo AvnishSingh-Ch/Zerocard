@@ -1,45 +1,18 @@
 {
-  "name": "neurocards-ai",
+  "name": "zerocard",
   "version": "1.0.0",
-  "description": "AI-Powered Smart Learning System",
-  "private": true,
+  "description": "Zerocard - Smart Learning System",
+  "main": "index.html",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "db:generate": "supabase gen types typescript --project-id YOUR_PROJECT_ID > types/supabase.ts"
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Static site - no build needed'"
   },
-  "dependencies": {
-    "next": "^14.0.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@supabase/supabase-js": "^2.38.0",
-    "@supabase/auth-helpers-nextjs": "^0.8.0",
-    "cohere-ai": "^7.3.0",
-    "@huggingface/inference": "^2.6.4",
-    "tailwindcss": "^3.3.0",
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.31",
-    "@tailwindcss/forms": "^0.5.7",
-    "@headlessui/react": "^1.7.17",
-    "@heroicons/react": "^2.0.18",
-    "framer-motion": "^10.16.4",
-    "react-hot-toast": "^2.4.1",
-    "zustand": "^4.4.6",
-    "date-fns": "^2.30.0",
-    "recharts": "^2.8.0",
-    "lucide-react": "^0.292.0",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.0.0",
-    "tailwind-merge": "^2.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.8.7",
-    "@types/react": "^18.2.31",
-    "@types/react-dom": "^18.2.14",
-    "typescript": "^5.2.2",
-    "eslint": "^8.51.0",
-    "eslint-config-next": "^14.0.0"
+  "keywords": ["flashcards", "learning", "education", "study"],
+  "author": "Zerocard Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AvnishSingh-Ch/Zerocard"
   }
 }

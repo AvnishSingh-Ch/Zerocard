@@ -1,28 +1,49 @@
 // Firebase functions will be added later - for now, working offline only
 
+// Global error handler
+window.addEventListener('error', (event) => {
+    console.error('Global error:', event.error);
+    if (window.app && window.app.showNotification) {
+        window.app.showNotification('❌ An error occurred. Please refresh if issues persist.');
+    }
+});
+
+// Handle unhandled promise rejections
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Unhandled promise rejection:', event.reason);
+    if (window.app && window.app.showNotification) {
+        window.app.showNotification('❌ An error occurred. Please refresh if issues persist.');
+    }
+});
+
 class Zerocard {
     constructor() {
-        this.currentUser = null;
-        this.decks = {};
-        this.currentDeck = 'default';
-        this.currentCard = null;
-        this.studyQueue = [];
-        this.currentIndex = 0;
-        this.sessionStats = { 
-            correct: 0, 
-            total: 0, 
-            streak: 0, 
-            maxStreak: 0,
-            xp: 0,
-            focusScore: 85
-        };
-        this.isAnswerShown = false;
-        this.isOnline = navigator.onLine;
-        
-        this.initializeElements();
-        this.attachEventListeners();
-        this.initializeAuth();
-        console.log('🃏 Zerocard initialized successfully!');
+        try {
+            this.currentUser = null;
+            this.decks = {};
+            this.currentDeck = 'default';
+            this.currentCard = null;
+            this.studyQueue = [];
+            this.currentIndex = 0;
+            this.sessionStats = { 
+                correct: 0, 
+                total: 0, 
+                streak: 0, 
+                maxStreak: 0,
+                xp: 0,
+                focusScore: 85
+            };
+            this.isAnswerShown = false;
+            this.isOnline = navigator.onLine;
+            
+            this.initializeElements();
+            this.attachEventListeners();
+            this.initializeAuth();
+            console.log('🃏 Zerocard initialized successfully!');
+        } catch (error) {
+            console.error('❌ Error initializing Zerocard:', error);
+            this.showErrorMessage('Failed to initialize application. Please refresh the page.');
+        }
     }
 
     initializeElements() {
@@ -1124,6 +1145,35 @@ class Zerocard {
         }, 4000);
     }
 
+    showErrorMessage(message) {
+        // Create a more prominent error message
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10000;
+            text-align: center;
+            font-weight: bold;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        `;
+        errorDiv.textContent = message;
+        document.body.appendChild(errorDiv);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.parentNode.removeChild(errorDiv);
+            }
+        }, 5000);
+    }
+
     updateDisplay() {
         this.updateDeckSelectors();
         this.updateStats();
@@ -1148,5 +1198,49 @@ document.head.appendChild(style);
 
 let app;
 document.addEventListener('DOMContentLoaded', () => {
-    app = new Zerocard();
+    try {
+        app = new Zerocard();
+        window.app = app; // Make globally available for error handlers
+        console.log('✅ Zerocard application loaded successfully');
+    } catch (error) {
+        console.error('❌ Failed to initialize Zerocard:', error);
+        
+        // Show error message to user
+        const errorDiv = document.createElement('div');
+        errorDiv.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            z-index: 10000;
+            text-align: center;
+            font-weight: bold;
+            max-width: 500px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        `;
+        errorDiv.innerHTML = `
+            <h3>⚠️ Application Failed to Load</h3>
+            <p>There was an error starting Zerocard. Please:</p>
+            <ul style="text-align: left; margin: 15px 0;">
+                <li>Refresh the page</li>
+                <li>Check your browser console for details</li>
+                <li>Ensure JavaScript is enabled</li>
+            </ul>
+            <button onclick="location.reload()" style="
+                background: white;
+                color: #ef4444;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                font-weight: bold;
+                cursor: pointer;
+                margin-top: 10px;
+            ">Refresh Page</button>
+        `;
+        document.body.appendChild(errorDiv);
+    }
 });
