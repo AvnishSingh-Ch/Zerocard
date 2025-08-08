@@ -13,12 +13,7 @@ A modern, vanilla JavaScript flashcard application for efficient learning and me
 
 ## 🚀 Quick Start
 
-### Option 1: Direct Deployment
-1. Upload all files to any static hosting service
-2. Access `index.html` in your browser
-3. Start creating and studying flashcards!
-
-### Option 2: Local Development
+### Option 1: Try It Now (Local)
 ```bash
 # Clone the repository
 git clone https://github.com/AvnishSingh-Ch/Zerocard.git
@@ -27,18 +22,18 @@ cd Zerocard
 # Serve locally (Python 3)
 python -m http.server 8000
 
-# Or use any static file server
 # Then open http://localhost:8000
 ```
 
-### Option 3: Deploy to Vercel
-```bash
-# Install Vercel CLI
-npm i -g vercel
+### Option 2: Deploy Online
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for detailed deployment instructions for:
+- 🌐 Vercel
+- 🎯 Netlify  
+- 📄 GitHub Pages
+- ⚡ Surge.sh
 
-# Deploy
-vercel --prod
-```
+### Option 3: Quick Test
+Open `test.html` in your browser to verify everything works correctly.
 
 ## 🛠 Technology Stack
 

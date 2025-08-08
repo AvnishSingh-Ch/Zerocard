@@ -1,0 +1,17 @@
+# Development files
+test.html
+.kiro/
+.vscode/
+.git/
+
+# Documentation
+DEPLOYMENT.md
+FIREBASE_SETUP.md
+
+# Unused files
+index-clean.html
+firebase-config.js
+js/
+
+# Environment files
+.env*
